@@ -1,0 +1,23 @@
+name = "ThesisCode"
+uuid = "624c588a-cd82-4c62-98aa-cc5ae420dbb8"
+authors = ["cshen <camillo.schenone@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+BlockArrays = "8e7c35d0-a365-5155-bbbb-fb81a777f24e"
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+FastTransforms = "057dd010-8810-581a-b7be-e3fc3b93f78c"
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+GraphMakie = "1ecd5474-83a3-4783-bb4f-06765db800d2"
+Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+LazyGrids = "7031d0ef-c40d-4431-b2f8-61a8d2f650db"
+LoopVectorization = "bdcacae8-1622-11e9-2a5c-532679323890"
+NetworkLayout = "46757867-2c16-5918-afeb-47bfcb05e46a"
+Observables = "510215fc-4207-5dde-b226-833fc4488ee2"
+OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
+PaddedViews = "5432bcbf-9aad-5242-b902-cca2824c8663"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+ThreadsX = "ac1d9e8a-700a-412c-b207-f0111f4b6c0d"
