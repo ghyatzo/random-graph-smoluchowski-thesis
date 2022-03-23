@@ -1,46 +1,69 @@
 # Readme
 Quick and dirty run down of the functions in this project
 
-#### `ThesisCode.jl`
-The main module. We import all the code from the other places and run test/plots and whatnot.
-
 #### `utils.jl`
 A bunch of helper functions
 - `mass_norm(a::Vector)` (also in place version)
 	+ normalise a distribution with respect to the total mass of the system, calculated as the first moment.
-- `sparsify!(a, eps)`
-	+ run through the whole array and puts to 0 all elements that are smaller than `eps`
-- `u(z, ws)`
-	+ builds the u function (a bit useless now)
-- `weak_components(z)`
+- `sparsify!(a; eps)`
+	+ run through the whole array and puts to 0 all elements that are smaller than `eps`.
+- `zerolift(a; eps)`
+    + rises all elements that are zero to eps.
+- `nanmap(a; eps)`
+    + if a value is smaller than eps, make it a `NaN` (plotting helper function when dealing with logarithmic scales.)
+- `massmultiply(a)`
+    + returns the array with `k*a[k]` entries.
+- `partitionN(N, eta)`
+    + input: `N` the total amount of nodes, `eta` the distribution of subtypes
+    + output: `n` a vector of concrete quantities, `n[i] = N * eta[i]`
+- `vertex_type(v, n)`
+    + given a vertex number `v`, returns the region in which it falls, and therefore the type.
 
 ## Numerical
+Self sufficient code to integrate numerically the
+- 1d burgers equation
+- 1d smoluchowski system of odes
+- 2d smoluchowski system of odes
+(using DifferentialEquations pacakge)
+
+## Plotting
+For each type of plot we generated, there is a self sufficient file. You can run them on their own and images will be saved in the `imgs` folder
 
 ## Random Graphs
 
- UB = exp(c1*(x-1))exp(c2*(y-1))
- UR = exp(c3*(x-1))exp(c4*(y-1))
+- `convolution_monocomponent.jl`
+    + code to run the exact solution obtained through the implicit algebraic system of functional equations.
+- `random_graph_monocomponent.jl`
+    + an easy example for the monocomponent case
+- `random_graph_multicomp.jl`
+    + the main file. explained below
+    
 
- C = At, are the rates at which we create new edges.
+#### `random_graph_multicomp.jl`
+
+here we implement the main algorithm that runs in `O((d+1)N)` time.
+This algorithm was adapted from https://doi.org/10.1007/978-3-642-21286-4_10.
+
+ `UB = exp(c1*(x-1))exp(c2*(y-1))`
+ `UR = exp(c3*(x-1))exp(c4*(y-1))`
+
+ `C = At`, are the rates at which we create new edges.
  In the most simple case, where we disallow edges of different types to join together, we have that
  The expected degree distribution for black edges then is (c1, 0), similarly the expected degree distribution for red edges is (0, c4)
 
- In the final graph, we encode the type of the vertex as `[n1..., n2...]`
- We then can define the degree distribution between different blocks.
+- `chung_lu_edges(c1, c2, n1, n2)`
+    + generates a set of pseudo edges, between `n1` nodes of one type and `n2` nodes of another type, with expected degree between them given by `c1` and `c2` respectively.
 
- the aim now is to define the expected degree between all possible combinations of blocks.
- NUMBER OF COMPONENTS: d = 2
- We will generate d^2 = 4 sets of expected degrees sequences, in this case:
-	- black -> black
-	- black -> red
-	- red 	-> black
- 	- red   -> red
-
- The aim of this, is then to generate d^2 separate Chung-Lu graphs with d^2 different weights sets
- Each time, we generate the graphs in linear time and then we will merge all edges to the same graph.
-
- We now generate a realisation of this distribution of edges adapting the algorithm from https://doi.org/10.1007/978-3-642-21286-4_10
- that runs in O(N+M) where N is the number of nodes and M is the expected number of edges.
-
- we assume that the numbering of the vertices is `n = [n1..., n2...]`
- so the actual vertex number for the `k`th vertex in the block `nj` is `sum([ni for i = 1:(j-1)])+k` or `cumsum(n)[j-1]+k`
+- `generate_multi_graph(t, kernel, n)`
+    + input:
+        * time `t`
+        * kernel: defines the quantities `c_ij`
+        * n: the partition in regions of the `N` nodes.
+    + The idea is, for each pair `(i,j)` we generate a set of pseudoedges through `chung_lu_edges`
+    + we run through all the pseudo-edgesets and wire them correctly wrt the type of nodes involved.
+    
+- `avg_cc_dist`
+    + generates multiple graphs, read the component distribution and return an average of the results
+    
+- `avg_weak_cc_dist`
+    + same as above but for the weaklt connected compoentns.
