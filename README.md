@@ -1,8 +1,7 @@
 # random-graph-smoluchowski-thesis
 Code I used in my master thesis, for the efficient generation of d-coloured graphs and subsequent plotting.
 
-
-## Main files
+# Main files
 Quick and dirty run down of the functions in this project.
 
 ## data
