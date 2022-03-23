@@ -44,9 +44,6 @@ For each type of plot we generated, there is a self sufficient file. You can run
 here we implement the main algorithm that runs in `O((d+1)N)` time.
 This algorithm was adapted from https://doi.org/10.1007/978-3-642-21286-4_10.
 
- `UB = exp(c1*(x-1))exp(c2*(y-1))`
- `UR = exp(c3*(x-1))exp(c4*(y-1))`
-
  `C = At`, are the rates at which we create new edges.
  In the most simple case, where we disallow edges of different types to join together, we have that
  The expected degree distribution for black edges then is (c1, 0), similarly the expected degree distribution for red edges is (0, c4)
